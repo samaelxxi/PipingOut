@@ -2678,7 +2678,6 @@ MonoBehaviour:
   _startCameraPos: {fileID: 1244991430}
   _startCameraLookAtPos: {fileID: 1816169645}
   _levelIndex: 2
-  _uiPrefab: {fileID: 390434809130100292, guid: 4c4a06f8cc5cc5941affcf5883b45a2f, type: 3}
   _ui: {fileID: 2124111657}
   _startCameraRotation: 4
   _respawnPos: {fileID: 114734426}
@@ -7218,6 +7217,10 @@ PrefabInstance:
       value: LevelUI
       objectReference: {fileID: 0}
     - target: {fileID: 390434809130100292, guid: 4c4a06f8cc5cc5941affcf5883b45a2f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761871673980295523, guid: 4c4a06f8cc5cc5941affcf5883b45a2f, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}

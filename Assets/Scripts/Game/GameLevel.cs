@@ -19,7 +19,6 @@ public class GameLevel : MonoBehaviour
     [SerializeField] protected Transform _startCameraPos;
     [SerializeField] protected Transform _startCameraLookAtPos;
     [SerializeField] int _levelIndex;
-    [SerializeField] GameObject _uiPrefab;
 
     [SerializeField] protected LevelUI _ui;
 
@@ -38,7 +37,6 @@ public class GameLevel : MonoBehaviour
 
     protected virtual void Awake()
     {
-        // _ui = Instantiate(_uiPrefab).GetComponentInChildren<LevelUI>();
         _ui.Init();
         _gameEvents.DialogChannelEventSO.OnTextChannelEvent += ShowDialog;
         _gameEvents.CommandChannelEventSO.OnCommandTriggered += ProcessCommand;
@@ -54,11 +52,6 @@ public class GameLevel : MonoBehaviour
     {
         _fallZone.OnPlayerFall += OnPlayerFall;
         _exitZone.OnPlayerExit += OnPlayerExit;
-        // _ui = FindObjectsOfTypeAll<LevelUI>()[0];
-        // _ui.gameObject.SetActive(true);
-
-        // TODO remove
-        Debug.Log($"Level {_levelIndex} started\nCompletedLevels: {PlayerData.CompletedLevels}");
     }
 
     public virtual void SetPlayerAndCamera(Player player, CameraController cameraController)
@@ -89,16 +82,12 @@ public class GameLevel : MonoBehaviour
         {
             Destroy(obj.gameObject);
         }
-        // if (_player != null) Destroy(_player.gameObject);
-        // if (_cameraController != null) Destroy(_cameraController.gameObject);
     }
 
     public void StartLevel(bool testStart = false)
     {
-        Debug.Log($"StartLevel: {testStart}");
-        if (testStart)  // to skip initial camera animation
+        if (testStart)  // to skip initial camera animation and don't move player
         {
-            Debug.Log($"Test start level {_levelIndex}");
             _player.EnableMovement();
             _player.MakeKinematic();
             _player.CameraController.MoveOnStart(_startCameraRotation, 0);
@@ -120,9 +109,7 @@ public class GameLevel : MonoBehaviour
     protected IEnumerator RestartCoroutine()
     {
         Debug.Log($"Restart level {_levelIndex}");
-        _player.SetCharacterControlsProcessing(false);
         _ui.HideScreen(1);
-        _ui.HideHint();
         _player.SetAnyInputProcessing(false);
         yield return new WaitForSeconds(1f);
         _player.TeleportTo(_respawnPos.position);
@@ -132,7 +119,7 @@ public class GameLevel : MonoBehaviour
         _player.CameraController.SetFollowing(true);
         _player.CameraController.SetLocked(false);
         yield return new WaitForSeconds(1f);
-        _player.SetCharacterControlsProcessing(true);
+        _ui.HideHint();
         _ui.RevealScreen(1, () => _player.SetAnyInputProcessing(true));
     }
 
@@ -164,15 +151,12 @@ public class GameLevel : MonoBehaviour
 
     IEnumerator EnablePlayerOnGrounding()
     {
-        Debug.Log($"EnablePlayerOnGrounding {_player}");
         while (true)
         {
             yield return new WaitForEndOfFrame();
-            Debug.Log($"{_player.transform.position}");
             Physics.Raycast(_player.transform.position, Vector3.down, out RaycastHit hit, 0.5f, LayerMask.GetMask("Ground") | LayerMask.GetMask("MovingPlatform"));
             if (hit.collider != null)
             {
-                Debug.Log($"EnablePlayerOnGrounding {_player}222");
                 _player.EnableMovement();
                 break;
             }
@@ -181,17 +165,9 @@ public class GameLevel : MonoBehaviour
 
     protected void ShowDialog(List<string> texts, bool force, Command startCommand, Command endCommand)
     {
-        // if (_ui == null)  // TODO find why crashes
-        // {
-        //     Debug.LogWarning("The LevelUI object has been destroyed.");
-        //     return;
-        // }
         ProcessCommand(startCommand);
-        // ProcessCommand(startCommand);
-        Debug.Log($"{_ui} {_ui.gameObject.activeSelf}");
         _ui.ShowDialog(texts, force, () => ProcessCommand(endCommand));
     }
-
 
     void SpitPlayer()
     {
@@ -208,17 +184,13 @@ public class GameLevel : MonoBehaviour
     void OnPlayerExit()
     {
         _pipeSuckSound.Play();
-        // StartCoroutine(Sound());
         _cameraController.MoveToExit(_exitZone.ExitPos, _exitZone.CameraExitPoint, _exitZone.CameraLookAtPoint, 2f);
-        // Debug.Log($"Moving player to ");
         _player.OnExit(_exitZone.ExitPos, () => StartCoroutine(FinishLevel()));
     }
 
     IEnumerator FinishLevel()
     {
-        _player.gameObject.SetActive(false);
-        Debug.Log($"Completed levels: {PlayerData.CompletedLevels}");
-        Debug.Log($"Next level: {PlayerData.NextLevel}");
+        _player.gameObject.GetComponent<Rigidbody>().isKinematic = true;
 
         yield return new WaitForSeconds(1f);
         int nextLevel = _levelIndex + 1;
@@ -230,14 +202,13 @@ public class GameLevel : MonoBehaviour
         }
         else
         {
-            Game.Instance.MutePlaneMusic();
+            Game.Instance.MutePlaneMusic(1);
             _ui.HideScreen(1, () => Game.Instance.GoToEnd());
         }
     }
 
     void ProcessCommand(Command command)
     {
-        Debug.Log($"Process command {command.CommandType}");
         if (command.CommandType == CommandOnTrigger.SetMovement)
             _player.SetAnyInputProcessing(command.BoolArg);
         else if (command.CommandType == CommandOnTrigger.SetObjectActive)

@@ -49,7 +49,6 @@ public class Player: MonoBehaviour
         _motor = GetComponent<KinematicCharacterMotor>();
         _hatController = GetComponent<HatCharacterController>();
         _hatController.OnJumpPerformed += OnJumpPerformed;
-        // DisableMovement();
     }
 
     public void SetIsMuted(bool isMuted)
@@ -89,7 +88,6 @@ public class Player: MonoBehaviour
 
     public void SetAnyInputProcessing(bool shouldProcessInput)
     {
-        // Debug.Log($"SetInputProcessing: {shouldProcessInput}");
         _shouldProcessInput = shouldProcessInput;
         if (!_shouldProcessInput)
             _hatController.SetInputs(_playerInput.GetStopMoveAxis());
@@ -119,7 +117,6 @@ public class Player: MonoBehaviour
         _rigidbody.isKinematic = true;
     }
 
-
     public void SetMoving(bool isMoving)
     {
         _animator.SetMoving(isMoving);
@@ -128,6 +125,7 @@ public class Player: MonoBehaviour
     void Update()
     {
         ProcessInput();
+
         if (Mathf.Abs(_characterInputs.MoveAxisForward) > 0.1f || 
             Mathf.Abs(_characterInputs.MoveAxisRight) > 0.1f)
             _animator.SetMoving(true);
@@ -149,7 +147,7 @@ public class Player: MonoBehaviour
 
 
         if (!isGrounded && Vector3.Dot(_hatController.Velocity, Vector3.down) > 0)
-        {
+        {   // try to predict if we will be grounded soon to play landing animation in advance
             Physics.Raycast(transform.position, _hatController.Velocity.normalized, out var hit, 10, LayerMask.GetMask("Ground"));
             bool groundingSoon = false;
             if (hit.collider != null)
@@ -186,7 +184,6 @@ public class Player: MonoBehaviour
         SetCharacterControlsProcessing(false);
         MakeDynamic();
         _cameraController.OnFall();
-        // Debug.Log($"Player fallen {transform.position}");
     }
 
     public void OnExit(Vector3 exitPos, Action onExitComplete)
@@ -196,12 +193,9 @@ public class Player: MonoBehaviour
         DisableMovement();
         SetAnyInputProcessing(false);
         _rigidbody.useGravity = false;
-        // Debug.Log($"Player exit {transform.position} {pos}");
         transform.DOMove(exitPos, MOVE_TO_EXIT_TIME).SetEase(Ease.InOutSine).OnComplete(
             () => transform.DOMove(transform.position + Vector3.up * 4f, 2f).SetEase(Ease.InQuint).OnComplete(
                 () => onExitComplete()));
-        // _hatController.MoveTo(pos, 2, Ease.InOutSine, () => _hatController.MoveTo(transform.position + Vector3.up * 3f, 3, Ease.Linear, () => Destroy(gameObject)));
-        // Debug.Log($"Player exit {transform.position}");
     }
 
     public void PickUpKey(Key key)

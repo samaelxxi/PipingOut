@@ -45,8 +45,6 @@ public class EndScene : MonoBehaviour
         yield return _ui.ShowDialogCoroutine("Oh, here we are again, in another enigmatic realm of pipes.");
         MoveCamera();
         yield return new WaitForSeconds(2f);
-        // _camera.DOMove(_camera1Pos.position, 1f);
-        // yield return _camera.DODynamicLookAt(_camera1Look.position, 1f).WaitForCompletion();
         yield return _ui.ShowDialogCoroutine("How peculiar! I don't recall encountering such a door in this world before.");
         _pupoOnPipes.transform.DOMove(_movePoint.position, 3f);
         _pupoOnPipes.SetMoving(true);
@@ -82,7 +80,7 @@ public class EndScene : MonoBehaviour
 
 
     void MoveCamera()
-    {
+    {    // done in last 2 hours so it's just copypaste from cameracontroller
         var playerPos = _pupoOnPipes.gameObject.transform.position;
             // Calculate the direction from the player to the exit
         var exitDir = (_camera1Pos.position - transform.position).normalized;
@@ -99,6 +97,5 @@ public class EndScene : MonoBehaviour
         // StartCoroutine(DoLookAtDuring(15, lootAtPos));
         // Rotate the camera to look at the look-at position
         _camera.DODynamicLookAt(_camera1Look.position, 2).SetEase(Ease.InOutCubic);
-
     }
 }

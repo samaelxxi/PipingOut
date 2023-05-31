@@ -29,7 +29,8 @@ public static class PlayerData
         }
     }
 
-    public static int NextLevel => (CompletedLevels + 1) > Globals.TOTAL_LEVELS ? Globals.TOTAL_LEVELS : CompletedLevels + 1;
+    public static int NextLevel => (CompletedLevels + 1) > Globals.TOTAL_LEVELS ? 
+                                                            Globals.TOTAL_LEVELS : CompletedLevels + 1;
 
     public static void IncreaseLevel()
     {

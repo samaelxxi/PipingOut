@@ -11,8 +11,10 @@ public class PlayerAnimator : MonoBehaviour
 
 
     Animator _animator;
-    int _movingHash = Animator.StringToHash("IsMoving");
-    int _inAirHash = Animator.StringToHash("IsInAir");
+    readonly int _movingHash = Animator.StringToHash("IsMoving");
+    readonly int _inAirHash = Animator.StringToHash("IsInAir");
+    readonly int _restingHash = Animator.StringToHash("IsResting");
+    readonly int _jumpHash = Animator.StringToHash("IsJumped");
 
     void Awake()
     {
@@ -37,7 +39,7 @@ public class PlayerAnimator : MonoBehaviour
 
     public void PlayJump()
     {
-        _animator.SetTrigger("IsJumped");
+        _animator.SetTrigger(_jumpHash);
     }
 
     public void PlayStepSound()
@@ -49,6 +51,6 @@ public class PlayerAnimator : MonoBehaviour
 
     public void EnableResting()
     {
-        _animator.SetBool("IsResting", true);
+        _animator.SetBool(_restingHash, true);
     }
 }

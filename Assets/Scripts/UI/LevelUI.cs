@@ -17,7 +17,6 @@ public class LevelUI : MonoBehaviour
     public void Init()
     {
         gameObject.SetActive(true);
-        _dialogWindow.Init();  // TODO deal with TMP lag
         _overlay.gameObject.SetActive(true);
         _dialogWindow.gameObject.SetActive(false);
         _hintWindow.SetActive(false);
@@ -50,20 +49,16 @@ public class LevelUI : MonoBehaviour
 
     public void ShowDialog(string text, bool force = false, Action onComplete = null)
     {
-        Debug.Log($"LEVELUI: SHOWDIALOG: {text} {force} {onComplete}{_dialogWindow == null}");
         _dialogWindow.Show(text, force, onComplete);
     }
 
     public void ShowDialog(List<string> texts, bool force = false, Action onComplete = null)
     {
-        Debug.Log($"LEVELUI: SHOWDIALOG(TEXTS): {texts} {force} {onComplete} {_dialogWindow == null}");
-
         _dialogWindow.Show(texts, force, onComplete);
     }
 
     public void ShowHint(string text, float duration = 0)
     {
-        Debug.Log($"LEVELUI: SHOWHINT: {text} {duration}");
         _hintText.text = text;
         _hintWindow.SetActive(true);
         if (duration > 0)
@@ -75,7 +70,7 @@ public class LevelUI : MonoBehaviour
         _hintWindow.SetActive(false);
     }
 
-    public void CompleteLevel()
+    public void CompleteLevel()  // cheat
     {
         FindObjectOfType<GameLevel>().CompleteLevel();
     }

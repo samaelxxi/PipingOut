@@ -26,25 +26,6 @@ public class DialogWindow : MonoBehaviour
     [SerializeField] Transform _hat;
 
 
-    public void Init()
-    {
-        // TODO make unity dont lag goddamnit
-        // gameObject.SetActive(true);
-        // _text.text = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~DELÇüéâäàåçêëèïîìÄÅÉæÆôöòûùÿÖÜø£Ø×ƒáíóúñÑªº¿®¬½¼¡«»░▒▓│┤ÁÂÀ©╣║╗╝¢¥┐└┴┬├─┼ãÃ╚╔╩╦╠═╬¤ðÐÊËÈıÍÎÏ┘┌█▄¦Ì▀ÓßÔÒõÕµþÞÚÛÙýÝ¯´­±‗¾¶§÷¸°¨·¹³²■";
-        // _text.text = "";
-        // gameObject.SetActive(false);
-    }
-
-    // IEnumerator ShowCoroutine(string text, bool force = false)
-    // {
-    //     if (_isTalking && !force)
-    //         yield break;
-
-    //     Prepare(force);
-    //     yield return StartCoroutine(ShowText(text));
-    // }
-
-
     IEnumerator MakeFaceTalking()
     {
         while (true)

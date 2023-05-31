@@ -7,6 +7,8 @@ public enum PlaneMusic { BG, X, Y, Z}
 
 public class GameOST : MonoBehaviour
 {
+    const float Z_MUSIC_MODIFIER = 1.3f;  // guitar track is not too loud
+
     [SerializeField] AudioSource _xMusic;
     [SerializeField] AudioSource _yMusic;
     [SerializeField] AudioSource _zMusic;
@@ -24,7 +26,7 @@ public class GameOST : MonoBehaviour
         _bgMusic.volume = _musicVolume;
         _xMusic.volume = _musicVolume;
         _yMusic.volume = _musicVolume;
-        _zMusic.volume = _musicVolume;
+        _zMusic.volume = _musicVolume * Z_MUSIC_MODIFIER;
     }
 
     public void SetPlaneMusic(PlaneMusic type, float loudness = -1, float duration = -1)
@@ -45,12 +47,12 @@ public class GameOST : MonoBehaviour
                 _yMusic.DOFade(loudness, duration);
                 break;
             case PlaneMusic.Z:
-                _zMusic.DOFade(loudness*1.3f, duration);
+                _zMusic.DOFade(loudness*Z_MUSIC_MODIFIER, duration);
                 break;
         }
     }
 
-    public void StopPlanesMusic(float duration)
+    public void StopPlanesMusic(float duration = 1)
     {
         _xMusic.DOFade(0, duration);
         _yMusic.DOFade(0, duration);

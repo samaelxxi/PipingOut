@@ -1,11 +1,12 @@
 using UnityEngine;
 
+
 public class FireLight : MonoBehaviour
 {
-    [SerializeField] private Light _light;
-    [SerializeField] private float _minIntensity = 0.5f;
-    [SerializeField] private float _maxIntensity = 1.5f;
-    [SerializeField] private float _flickerSpeed = 0.1f;
+    [SerializeField] Light _light;
+    [SerializeField] float _minIntensity = 0.5f;
+    [SerializeField] float _maxIntensity = 1.5f;
+    [SerializeField] float _flickerSpeed = 0.1f;
 
     private float _targetIntensity;
 

@@ -6,6 +6,8 @@ using System;
 using DG.Tweening;
 
 
+// from KinematicCharacterController
+
 public enum CharacterState
 {
     Default,

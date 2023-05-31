@@ -53,31 +53,26 @@ public class DialogTriggerZone : MonoBehaviour
         _dialogChannel.RaiseTextChannelEvent(_texts, _forceShow, StartCommand(), EndCommand());
     }
 
-    // no time to refactor this
     Command StartCommand()
     {
-        return _startCommandType switch
-        {
-            CommandType.Int => new Command( (CommandOnTrigger)Enum.Parse( typeof( CommandOnTrigger ), _startIntCommand.ToString() ),
-                                _startIntArg, _startObj, _startBoolArg ),
-            CommandType.Bool => new Command( (CommandOnTrigger)Enum.Parse( typeof( CommandOnTrigger ), _startBoolCommand.ToString() ),
-                                _startIntArg, _startObj, _startBoolArg ),
-            CommandType.GameObject => new Command( (CommandOnTrigger)Enum.Parse( typeof( CommandOnTrigger ), _startObjCommand.ToString() ),
-                                _startIntArg, _startObj, _startBoolArg ),
-            _ => new Command( CommandOnTrigger.None, 0, null, false ),
-        };
+        return MakeCommand(_startCommandType, _startIntArg, _startIntCommand, _startBoolArg, _startBoolCommand, _startObj, _startObjCommand);
     }
 
     Command EndCommand()
     {
-        return _endCommandType switch
+        return MakeCommand(_endCommandType, _endIntArg, _endIntCommand, _endBoolArg, _endBoolCommand, _endObj, _endObjCommand);
+    }
+
+    Command MakeCommand(CommandType type, int intArg, IntCommand intCommand, bool boolArg, BoolCommand boolCommand, GameObject obj, ObjCommand objCommand)
+    {
+        return type switch
         {
-            CommandType.Int => new Command( (CommandOnTrigger)Enum.Parse( typeof( CommandOnTrigger ), _endIntCommand.ToString() ),
-                                _endIntArg, _endObj, _endBoolArg ),
-            CommandType.Bool => new Command( (CommandOnTrigger)Enum.Parse( typeof( CommandOnTrigger ), _endBoolCommand.ToString() ),
-                                _endIntArg, _endObj, _endBoolArg ),
-            CommandType.GameObject => new Command( (CommandOnTrigger)Enum.Parse( typeof( CommandOnTrigger ), _endObjCommand.ToString() ),
-                                _endIntArg, _endObj, _endBoolArg ),
+            CommandType.Int => new Command( (CommandOnTrigger)Enum.Parse( typeof( CommandOnTrigger ), intCommand.ToString() ),
+                                intArg, obj, boolArg ),
+            CommandType.Bool => new Command( (CommandOnTrigger)Enum.Parse( typeof( CommandOnTrigger ), boolCommand.ToString() ),
+                                intArg, obj, boolArg ),
+            CommandType.GameObject => new Command( (CommandOnTrigger)Enum.Parse( typeof( CommandOnTrigger ), objCommand.ToString() ),
+                                intArg, obj, boolArg ),
             _ => new Command( CommandOnTrigger.None, 0, null, false ),
         };
     }

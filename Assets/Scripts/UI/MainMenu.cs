@@ -29,7 +29,7 @@ public class MainMenu : MonoBehaviour
         _mainMenu.SetActive(true);
         _levelsMenu.SetActive(false);
         SetupLevelButtons();
-        Game.Instance.MutePlaneMusic();
+        Game.Instance.MutePlaneMusic(1);
     }
 
     public void SetupLevelButtons()
@@ -68,12 +68,9 @@ public class MainMenu : MonoBehaviour
         _levelsMenu.SetActive(false);
     }
 
-
-
     public void StartGame()
     {
         _clickSound.Play();
-        Debug.Log($"StartGame: {PlayerData.NextLevel}");
         StartLevel(PlayerData.NextLevel);
     }
 

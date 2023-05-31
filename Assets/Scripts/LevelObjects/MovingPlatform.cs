@@ -41,8 +41,8 @@ public class MovingPlatform : MonoBehaviour, IMoverController
 
         if (_points.Count < 2)
             Debug.LogError("Not enough points for moving platform");
-        else if (_points.TrueForAll(x => x == null))
-            Debug.LogError("Some points are null");
+        else if (!_points.TrueForAll(x => x != null))
+            Debug.LogError("Some points of moving platform are null");
         else
             _isReady = true;
 
@@ -76,7 +76,7 @@ public class MovingPlatform : MonoBehaviour, IMoverController
         float easeVal = GetCurrentTargetPos();
         goalPosition = _points[_startPoint].position;
         var dir = _points[_destinationPoint].position - _points[_startPoint].position;
-        // Debug.Log($"start: {goalPosition}, dir: {dir}, goal: {_points[_destinationPoint].position},  res: {dir * easeVal} {easeVal}");
+
         goalPosition += dir * easeVal;
         goalRotation = _transform.rotation;
 
@@ -91,8 +91,6 @@ public class MovingPlatform : MonoBehaviour, IMoverController
     {
         if (Vector3.Distance(_platform.position, _points[_destinationPoint].position) < 0.001f)
         {
-            // Debug.Log($"{_startPoint} {_destinationPoint} pos {_platform.position} {_points[_destinationPoint].position} dist {Vector3.Distance(_platform.position, _points[_destinationPoint].position)}");
-
             int nextPoint;
             if (_shouldLoop)
                 nextPoint = (_destinationPoint + 1) % _points.Count;
@@ -107,7 +105,6 @@ public class MovingPlatform : MonoBehaviour, IMoverController
             }
             SetNewDestination(_destinationPoint, nextPoint);
         }
-        // Debug.Log($"Ease of {_movingTime / _totalTime}");
         var ease = DOVirtual.EasedValue(0, 1, _movingTime / _totalTime, _ease);
         return ease;
     }
@@ -117,24 +114,10 @@ public class MovingPlatform : MonoBehaviour, IMoverController
 
         _startPoint = start;
         _destinationPoint = destination;
-        // Debug.Log($"not start is {_points[_startPoint].position} and dest is {_points[_destinationPoint].position}");
         float totalDist = Vector3.Distance(_platform.position, _points[_destinationPoint].position);
         _movingTime = 0;
         _totalTime = totalDist / _speed;
     }
-
-    // void MoveToNextPoint()
-    // {
-    //     int nextPoint = _startPoint + (_forward ? 1 : -1);
-    //     if (nextPoint >= _points.Count || nextPoint < 0)
-    //     {
-    //         _forward = !_forward;
-    //         nextPoint = _startPoint + (_forward ? 1 : -1);
-    //     }
-    //     float dist = Vector3.Distance(_platform.position, _points[nextPoint].position);
-    //     var tween = _platform.transform.DOMove(_points[nextPoint].position, dist / _speed).SetEase(_ease);
-    //     tween.OnComplete(() => { _startPoint = nextPoint; MoveToNextPoint(); });
-    // }
 
     void OnDrawGizmosSelected()
     {

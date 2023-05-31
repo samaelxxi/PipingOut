@@ -13,9 +13,6 @@ public class DoorEyes : MonoBehaviour
 
     void Update()
     {
-        // if (_eyeTarget == null || !_canUpdate)
-        //     return;
-
         Vector3 leftEyeDirection, rightEyeDirection;
         if (_eyeTarget == null)
         {

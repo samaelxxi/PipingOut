@@ -4,30 +4,30 @@ using UnityEditor;
 [CustomEditor(typeof(DialogTriggerZone))]
 public class DialogTriggerZoneEditor : Editor
 {
-    private SerializedProperty _dialogChannel;
+    SerializedProperty _dialogChannel;
 
-    private SerializedProperty _texts;
-    private SerializedProperty _forceShow;
-    private SerializedProperty _onlyOnce;
+    SerializedProperty _texts;
+    SerializedProperty _forceShow;
+    SerializedProperty _onlyOnce;
 
 
-    private SerializedProperty _endCommandType;
-    private SerializedProperty _endIntArg;
-    private SerializedProperty _endBoolArg;
-    private SerializedProperty _endObj;
-    private SerializedProperty _endIntCommand;
-    private SerializedProperty _endBoolCommand;
-    private SerializedProperty _endObjCommand;
-    private SerializedProperty _startCommandType;
-    private SerializedProperty _startIntArg;
-    private SerializedProperty _startBoolArg;
-    private SerializedProperty _startObj;
-    private SerializedProperty _startIntCommand;
-    private SerializedProperty _startBoolCommand;
-    private SerializedProperty _startObjCommand;
-    private SerializedProperty _delay;
+    SerializedProperty _endCommandType;
+    SerializedProperty _endIntArg;
+    SerializedProperty _endBoolArg;
+    SerializedProperty _endObj;
+    SerializedProperty _endIntCommand;
+    SerializedProperty _endBoolCommand;
+    SerializedProperty _endObjCommand;
+    SerializedProperty _startCommandType;
+    SerializedProperty _startIntArg;
+    SerializedProperty _startBoolArg;
+    SerializedProperty _startObj;
+    SerializedProperty _startIntCommand;
+    SerializedProperty _startBoolCommand;
+    SerializedProperty _startObjCommand;
+    SerializedProperty _delay;
 
-    private void OnEnable()
+    void OnEnable()
     {
         _dialogChannel = serializedObject.FindProperty("_dialogChannel");
         _endCommandType = serializedObject.FindProperty("_endCommandType");

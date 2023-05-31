@@ -20,7 +20,6 @@ public class CameraController : MonoBehaviour
 
     bool _isFollowing = false;
     bool _isLocked = false;
-    public bool IsMoving => _isMoving;
     [SerializeField] float _rotationTime = 0.5f;
     Quaternion _rotateTo;
 
@@ -66,7 +65,6 @@ public class CameraController : MonoBehaviour
 
     void UsePlayerCamera()
     {
-        // Debug.Log($"UsePlayerCamera");
         _playerCamera.enabled = true;
         _mainCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("Player"));
     }
@@ -91,12 +89,10 @@ public class CameraController : MonoBehaviour
     {
         if (!IsCanMove || 
                 command == CameraRotationCommand.None ||
-                ((command == CameraRotationCommand.Left || 
-                  command == CameraRotationCommand.Right) && 
-                  IsTopView))
+                (IsTopView && (command == CameraRotationCommand.Left || 
+                               command == CameraRotationCommand.Right)))
             return false;
 
-        // Debug.Log($"TryRotateCamera: {command}");
         switch (command)
         {
             case CameraRotationCommand.Left:
@@ -143,20 +139,17 @@ public class CameraController : MonoBehaviour
             game.SetPlaneMusic(PlaneMusic.X);
             game.SetPlaneMusic(PlaneMusic.Y, 0);
             game.SetPlaneMusic(PlaneMusic.Z);
-            // Debug.Log($"Enabling x and z music");
         }
         else
         {
             game.SetPlaneMusic(PlaneMusic.Y);
             if (_rotation % 2 == 0)
             {
-                // Debug.Log($"Enabling x and y music");
                 game.SetPlaneMusic(PlaneMusic.X);
                 game.SetPlaneMusic(PlaneMusic.Z, 0);
             }
             else
             {
-                // Debug.Log($"Enabling z and y music");
                 game.SetPlaneMusic(PlaneMusic.X, 0);
                 game.SetPlaneMusic(PlaneMusic.Z);
             }
@@ -171,7 +164,6 @@ public class CameraController : MonoBehaviour
         _cameraTween = transform.DORotateQuaternion(_rotateTo, _rotationTime).SetEase(Ease.InOutCubic).OnComplete(RotationEnd);
         StartCoroutine(CameraNearClipMove());
         _isMoving = true;
-        // Debug.Log($"Camera rotation: {_rotation}");
         SetPlaneMusic();
     }
 
@@ -202,7 +194,6 @@ public class CameraController : MonoBehaviour
             SetLocked(true);
             SetFollowing(false);
 
-            // Calculate the direction from the player to the exit
             var exitDir = (exitPos - transform.position).normalized;
             var exitDist = Vector3.Distance(exitPos, transform.position);
             var midPoint = transform.position + exitDir * exitDist / 2;
@@ -212,17 +203,10 @@ public class CameraController : MonoBehaviour
 
             // Move the camera along the circular arc
             var path = new Vector3[] { transform.position, orbitPoint, exitPos };
-            // EnableThirdCamera(false);
             transform.DOPath(path, duration, PathType.CatmullRom, PathMode.Full3D, 10, Color.red).SetEase(Ease.InOutCubic).OnComplete(RotationEnd);
-            // StartCoroutine(DoLookAtDuring(15, lootAtPos));
-            // Rotate the camera to look at the look-at position
             transform.DODynamicLookAt(lootAtPos, duration).SetEase(Ease.InOutCubic).OnComplete(UseMainCameraOnly);
-
-            // Set the near clip plane of the main camera
             _mainCamera.DONearClipPlane(1, duration).SetEase(Ease.OutCubic);
         }
-
-    
 
     void StartMoveToTopView(float duration = 2)
     {
@@ -252,7 +236,6 @@ public class CameraController : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(0, 90 * newRotation, 0);
         Vector3 direction = rotation * Vector3.forward;
         Vector3 sidePos = _target.position - direction * _playerDist;
-        // Debug.LogError($"Top pos: {sidePos}");
         // TODO adjust near clip movement
         transform.DOMove(sidePos, duration).SetEase(Ease.InOutCubic).OnComplete(RotationEnd);
         _cameraTween?.Kill();
@@ -262,13 +245,12 @@ public class CameraController : MonoBehaviour
 
     public void MoveOnStart(CameraRotation rotation, float duration = 2)
     {
-        // Debug.Log($"Move to state: {rotation}");
+        Debug.Log($"MoveOnStart {rotation}");
         if (rotation == CameraRotation.Top)
             StartMoveToTopView(duration);
         else
             MoveToSideView((int)rotation, duration);
         SetPlaneMusic();
-        // Debug.Log($"{_rotation} {_isTopView}");
     }
 
     void SmoothFollow()
@@ -282,14 +264,13 @@ public class CameraController : MonoBehaviour
     {
         float res = 0;
         if ((_rotation == 0 && _target.position.z >= 0) || (_rotation == 2 && _target.position.z < 0))
-            res = _playerDist - Mathf.Abs(_target.position.z % 1) - 0f;
+            res = _playerDist - Mathf.Abs(_target.position.z % 1);
         else if ((_rotation == 2 && _target.position.z >= 0) || (_rotation == 0 && _target.position.z < 0))
-            res = _playerDist - (1 - Mathf.Abs(_target.position.z % 1)) - 0f;
+            res = _playerDist - (1 - Mathf.Abs(_target.position.z % 1));
         else if ((_rotation == 1 && _target.position.x >= 0) || (_rotation == 3 && _target.position.x < 0))
-            res = _playerDist -  Mathf.Abs(_target.position.x % 1) - 0f;
+            res = _playerDist -  Mathf.Abs(_target.position.x % 1);
         else if ((_rotation == 3 && _target.position.x >= 0) || (_rotation == 1 && _target.position.x < 0))
-            res = _playerDist - (1 - Mathf.Abs(_target.position.x % 1)) - 0f;
-        // Debug.Log($"Player pos: {_target.position}\n{_target.position.z % 1} {res}");
+            res = _playerDist - (1 - Mathf.Abs(_target.position.x % 1));
         return res;
     }
 

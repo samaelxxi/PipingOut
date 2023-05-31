@@ -14,7 +14,6 @@ public class PlayerInput
 
     public void SetCanControl(bool canControl)
     {
-        // Debug.Log($"SetCanControl {canControl}");
         _canControl = canControl;
     }
 

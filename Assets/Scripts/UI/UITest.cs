@@ -14,6 +14,6 @@ public class UITest : MonoBehaviour
 
     void GoOn()
     {
-        _ui.ShowDialog(new List<string>() { "Hey, baby, what's up?", "Wanna fuck?"});
+        _ui.ShowDialog(new List<string>() { "Hey, baby, what's up?", "I'm fine, thanks, and you?", "I'm fine too, thanks for asking", "You're welcome, baby"});
     }
 }

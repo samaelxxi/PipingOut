@@ -26,7 +26,6 @@ public class Game : Singleton<Game>
     {
         if (_testLoad)  // teset game inside level scene so can start
         {
-            // Debug.Log($"Test load level {_testStart}");
             StartLevel();
             _gameOst.StartLevelMusic();
         }
@@ -34,7 +33,7 @@ public class Game : Singleton<Game>
 
     public void LoadLevel(int levelIndex)
     {
-        // Debug.Log($"Loading level {levelIndex}");
+        Debug.Log($"Loading level {levelIndex}");
         SceneManager.sceneLoaded += OnLevelLoaded;
         SceneManager.LoadScene($"Level{levelIndex}", LoadSceneMode.Single);
     }
@@ -47,15 +46,12 @@ public class Game : Singleton<Game>
     void InitLevel()
     {
         _level = FindObjectOfType<GameLevel>();
-        // var testPlayer = FindObjectOfType<Player>();
-        // if (testPlayer != null)
-        //     Destroy(testPlayer.gameObject);
         if (_level == null)
         {
-            // Debug.LogError("No GameLevel found in scene");
+            Debug.LogError("No GameLevel found in scene");
             return;
         }
-        // Debug.Log($"Init level {_level}");
+        Debug.Log($"Init level {_level}");
         StartLevel();
     }
 
@@ -71,13 +67,11 @@ public class Game : Singleton<Game>
         CameraController camera;
         if (_testLoad)
         {
-            // Debug.Log($"Test start level {_testStart}");
             player = _testPlayer == null ? Instantiate(_playerPrefab, Vector3.zero, Quaternion.identity) : _testPlayer;
             camera = _testCamera == null ? Instantiate(_cameraPrefab, Vector3.zero, Quaternion.identity) : _testCamera;
         }
         else
         {
-            // Debug.Log($"Start level {_level.LevelIndex}");
             _level.CleanTestStuff();
             player = Instantiate(_playerPrefab, Vector3.zero, Quaternion.identity);
             camera = Instantiate(_cameraPrefab, Vector3.zero, Quaternion.identity);
@@ -89,9 +83,7 @@ public class Game : Singleton<Game>
     public void GoToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
-        SetPlaneMusic(PlaneMusic.X, 0, 1);
-        SetPlaneMusic(PlaneMusic.Y, 0, 1);
-        SetPlaneMusic(PlaneMusic.Z, 0, 1);
+        MutePlaneMusic(1);
     }
 
     public void GoToEnd()
@@ -106,16 +98,12 @@ public class Game : Singleton<Game>
 
     public void MuteAllMusic(float duration)
     {
-        SetPlaneMusic(PlaneMusic.X, 0, duration);
-        SetPlaneMusic(PlaneMusic.Y, 0, duration);
-        SetPlaneMusic(PlaneMusic.Z, 0, duration);
+        MutePlaneMusic(duration);
         SetPlaneMusic(PlaneMusic.BG, 0, duration);
     }
 
-    public void MutePlaneMusic()
+    public void MutePlaneMusic(float duration)
     {
-        SetPlaneMusic(PlaneMusic.X, 0, 1);
-        SetPlaneMusic(PlaneMusic.Y, 0, 1);
-        SetPlaneMusic(PlaneMusic.Z, 0, 1);
+        _gameOst.StopPlanesMusic(duration);
     }
 }
