@@ -69,6 +69,7 @@ public class Game : Singleton<Game>
         {
             player = _testPlayer == null ? Instantiate(_playerPrefab, Vector3.zero, Quaternion.identity) : _testPlayer;
             camera = _testCamera == null ? Instantiate(_cameraPrefab, Vector3.zero, Quaternion.identity) : _testCamera;
+            _testLoad = false;  // next level will be loaded normally
         }
         else
         {
