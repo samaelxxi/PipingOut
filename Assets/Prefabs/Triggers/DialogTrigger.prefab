@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6123323798213022726
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6123323798213022725}
+  - component: {fileID: 6123323798213022723}
+  - component: {fileID: 7283092590000240590}
+  m_Layer: 0
+  m_Name: DialogTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6123323798213022725
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6123323798213022726}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.74496555, y: -1.2692575, z: 8.447505}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6123323798213022723
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6123323798213022726}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.9148441, z: 1}
+  m_Center: {x: 0, y: 0.25742206, z: 0}
+--- !u!114 &7283092590000240590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6123323798213022726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f6cc2ec830b8684081283be7c482360, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dialogChannel: {fileID: 11400000, guid: 787e6139cb00bc349809d7a92caa8283, type: 2}
+  _texts: []
+  _forceShow: 0
+  _onlyOnce: 1
+  _startCommandType: 0
+  _startIntArg: 0
+  _startIntCommand: 0
+  _startBoolArg: 0
+  _startBoolCommand: 0
+  _startObj: {fileID: 0}
+  _startObjCommand: 0
+  _endCommandType: 0
+  _endIntArg: 0
+  _endIntCommand: 0
+  _endBoolArg: 0
+  _endBoolCommand: 0
+  _endObj: {fileID: 0}
+  _endObjCommand: 0
