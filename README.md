@@ -1,7 +1,7 @@
 # PipingOut
 GameDev.TV 2023 game jam project. Done in 10 days.  
   
-Game: https://sami822.itch.io/piping-out  
+Game: https://samaelxxi.itch.io/piping-out  
 Video walkthrough: https://youtu.be/QhNsN-B94P8
   
 Jam results(about 1000 games was submitted)  
